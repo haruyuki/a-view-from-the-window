@@ -1,12 +1,12 @@
-var rotateAmount = 30;  // How much the canvas has rotated
+var rotateAmount = 0;  // How much the canvas has rotated
 var stars = [];  // Array of stars on the canvas
 var clouds = [];  // Array of clouds on the canvas
-var moonRadius = 100;
+var moonRadius = 200;
 var moonCraters = [];  // Array of craters on the moon
-var timeRotation = 30;  // What 'time' the canvas is at, default to daytime
+var timeRotation = 0;  // What 'time' the canvas is at
 var grassVariation;  // A variable for how tall the grass is
 var enableAutoMove = 0;
-var baseAutoMove = 0.1;
+var baseAutoMove = 0.25;
 var extraAutoMove = 0;
 var enableClouds = 1;
 
@@ -39,7 +39,7 @@ function setup() {
     grassVariation = random(150, 250);  // Generate a random height for the grass patch
 
     var longestEdge = max(windowWidth, windowHeight);
-    for (var _ = 0; _ < 3000; _++) {  // Create 3000 stars
+    for (var _ = 0; _ < 3500; _++) {  // Create 3000 stars
         stars.push(new Star(
             2,
             random(-longestEdge, longestEdge * 2),
@@ -53,8 +53,8 @@ function setup() {
     for (var _ = 0; _ < 20; _++) {  // Create 20 moon craters
         var placementX;
         var placementY;
-        var craterSize = random(5, 20);
-        var centreDistance = random(0, moonRadius - craterSize);  // So the crater won't be placed outside the moon
+        var craterSize = random(10, 30);
+        var centreDistance = random(0, moonRadius/2 - craterSize);  // So the crater won't be placed outside the moon
         var placementAngle = random(0, 360);
         var placementAngleCalcuation = placementAngle % 90;
 
@@ -100,7 +100,7 @@ function draw() {
 
     fill("#FDB813");
     sunXPos = -windowWidth / 2 - (windowWidth / 2 / 2);
-    circle(sunXPos, -100, 100);
+    circle(sunXPos, -100, 200);
 
     moonXPos = windowWidth / 2 + (windowWidth / 2 / 2);
     drawMoon(moonXPos, -100);
@@ -179,10 +179,10 @@ function drawStar(star) {
 
 function drawCloud(x, y) {
     fill(255);
-    var variable = 15;
+    var variable = 30;
     circle(x, y, variable);
     circle(x + 200, y, variable);
-    rect(x, y - variable, 200, variable * 2);
+    rect(x, y - variable/2, 200, variable);
 }
 
 function drawMoon(x, y) {
@@ -206,10 +206,10 @@ function keyTyped() {
     if (key === " ") {
         enableAutoMove = 1 ^ enableAutoMove;
     }
-    if (key === "=" || key === "+") {
+    if (key === "=") {
         extraAutoMove += 0.2;
     }
-    if (key === "-" || key === "_") {
+    if (key === "-") {
         if (extraAutoMove > 0) {
             extraAutoMove -= 0.2;
         } else {
